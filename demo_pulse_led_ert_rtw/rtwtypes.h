@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'demo_pulse_led'.
  *
- * Model version                  : 1.0
+ * Model version                  : 1.4
  * Simulink Coder version         : 9.7 (R2022a) 13-Nov-2021
- * C/C++ source code generated on : Tue Sep  3 13:23:51 2024
+ * C/C++ source code generated on : Wed Sep  4 23:18:30 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex-M

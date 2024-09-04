@@ -3,3 +3,5 @@
 slprj/
 
 pulseLedStm32F4/.metadata/
+
+*.slxc
