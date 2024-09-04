@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'demo_pulse_led'.
  *
- * Model version                  : 1.0
+ * Model version                  : 1.4
  * Simulink Coder version         : 9.7 (R2022a) 13-Nov-2021
- * C/C++ source code generated on : Tue Sep  3 13:23:51 2024
+ * C/C++ source code generated on : Wed Sep  4 23:18:30 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex-M
@@ -36,30 +36,45 @@ RT_MODEL *const rtM = &rtM_;
 /* Model step function */
 void demo_pulse_led_step(void)
 {
-  real_T lastSin_tmp;
+  real_T rtb_Gain;
 
   /* Sin: '<Root>/Sine Wave' */
   if (rtDW.systemEnable != 0) {
-    lastSin_tmp = 0.1 * ((rtM->Timing.clockTick0) * 1.0);
-    rtDW.lastSin = sin(lastSin_tmp);
-    rtDW.lastCos = cos(lastSin_tmp);
+    rtb_Gain = 0.1 * ((rtM->Timing.clockTick0) * 1.0);
+    rtDW.lastSin = sin(rtb_Gain);
+    rtDW.lastCos = cos(rtb_Gain);
     rtDW.systemEnable = 0;
   }
 
-  /* Outport: '<Root>/WaitTime' incorporates:
-   *  Gain: '<Root>/Gain'
+  /* Gain: '<Root>/Gain' incorporates:
    *  Sin: '<Root>/Sine Wave'
    */
-  rtY.WaitTime = (((rtDW.lastSin * 0.99500416527802571 + rtDW.lastCos *
-                    -0.099833416646828155) * 0.99500416527802571 + (rtDW.lastCos
-    * 0.99500416527802571 - rtDW.lastSin * -0.099833416646828155) *
-                   0.099833416646828155) * 0.2 + 0.25) * 1000.0;
+  rtb_Gain = (((rtDW.lastSin * 0.99500416527802571 + rtDW.lastCos *
+                -0.099833416646828155) * 0.99500416527802571 + (rtDW.lastCos *
+    0.99500416527802571 - rtDW.lastSin * -0.099833416646828155) *
+               0.099833416646828155) * 0.2 + 0.25) * 1000.0;
+
+  /* Switch: '<Root>/Switch' incorporates:
+   *  Constant: '<Root>/Constant3'
+   *  RelationalOperator: '<Root>/Relational Operator'
+   */
+  if (rtb_Gain >= 0.0) {
+    /* Outport: '<Root>/WaitTime' incorporates:
+     *  Sum: '<Root>/Add'
+     */
+    rtY.WaitTime = rtb_Gain;
+  } else {
+    /* Outport: '<Root>/WaitTime' */
+    rtY.WaitTime = 1000.0;
+  }
+
+  /* End of Switch: '<Root>/Switch' */
 
   /* Update for Sin: '<Root>/Sine Wave' */
-  lastSin_tmp = rtDW.lastSin;
+  rtb_Gain = rtDW.lastSin;
   rtDW.lastSin = rtDW.lastSin * 0.99500416527802571 + rtDW.lastCos *
     0.099833416646828155;
-  rtDW.lastCos = rtDW.lastCos * 0.99500416527802571 - lastSin_tmp *
+  rtDW.lastCos = rtDW.lastCos * 0.99500416527802571 - rtb_Gain *
     0.099833416646828155;
 
   /* Update absolute time for base rate */
